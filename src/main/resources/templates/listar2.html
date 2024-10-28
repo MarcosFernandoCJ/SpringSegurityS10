@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container">
+  <h1
+          class="text-secondary border border-success border-top-0 border-left-0 border-right-0"
+          th:text="#{text.alumno.titulo}">Mantenimiento de Alumnos</h1>
+
+  <p>
+    <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/form2}" class="btn btn-success btn-xs">Crear Alumno</a>
+  </p>
+
+  <table class="table table-striped">
+    <thead class="bg-dark">
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Edad</th>
+      <th>Correo</th>
+      <th><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs float-right mx-2"
+             th:href="@{ver2(format=pdf)}">PDF</a></th>
+      <th><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success btn-xs float-right"
+             th:href="@{ver2(format=xlsx)}">XLS</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="alumno: ${alumnos}">
+      <td th:text="${alumno.id}"></td>
+      <td th:text="${alumno.nombre}"></td>
+      <td th:text="${alumno.apellido}"></td>
+      <td th:text="${alumno.edad}"></td>
+      <td th:text="${alumno.correo}"></td>
+      <td><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-xs"
+             th:href="@{/form2/} + ${alumno.id}" th:text="#{text.boton.editar}">Editar</a></td>
+      <td><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs"
+             th:href="@{/eliminar2/} + ${alumno.id}"
+             th:text="'Eliminar'" onclick="return confirm('Estás seguro que quieres eliminar?');">Eliminar</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
